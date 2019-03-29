@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="rule">
+	<resultMap type="rule" id="ruleResult">
+		<result property="id" 				column="id"/>
+		<result property="empId" 			column="emp_id"/>
+		<result property="empName" 			column="emp_name"/>
+		<result property="empUserName" 		column="emp_username"/>
+		<result property="empGroupId" 		column="emp_group_id"/>
+		<result property="empGroupName" 	column="emp_group_name"/>
+		<result property="empRoleId" 		column="emp_role_id"/>
+		<result property="empRoleName" 		column="emp_role_name"/>
+		<result property="resId" 			column="res_id"/>
+		<result property="resName" 			column="res_name"/>
+		<result property="resIp" 			column="res_ip"/>
+		<result property="networkId" 		column="network_id"/>
+		<result property="networkName" 		column="network_name"/>
+		<result property="resType" 			column="res_type"/>
+		<result property="resOsType" 		column="res_os_type"/>
+		<result property="createTime" 		column="create_time"/>
+		<result property="updateTime" 		column="update_time"/>
+	</resultMap>
+	
+	<select id="query" parameterType="java.util.HashMap" resultMap="ruleResult">
+		<![CDATA[
+			SELECT
+			  `id`,
+			  `emp_id`,
+			  `emp_name`,
+			  `emp_username`,
+			  `emp_group_id`,
+			  `emp_group_name`,
+			  `emp_role_id`,
+			  `emp_role_name`,
+			  `res_id`,
+			  `res_name`,
+			  `res_ip`,
+			  `network_id`,
+			  `network_name`,
+			  `res_type`,
+			  `res_os_type`,
+			  `create_time`,
+			  `update_time`
+			FROM `rule`
+		]]>
+		<where>
+			<if test="keyword != '' and keyword != null">
+				<![CDATA[
+					AND (emp_name LIKE CONCAT('%',#{keyword},'%') OR emp_username LIKE CONCAT('%',#{keyword},'%')
+						 OR emp_group_name LIKE CONCAT('%',#{keyword},'%') OR emp_role_name LIKE CONCAT('%',#{keyword},'%')
+						 OR res_name LIKE CONCAT('%',#{keyword},'%') OR res_ip LIKE CONCAT('%',#{keyword},'%')
+						 OR network_name LIKE CONCAT('%',#{keyword},'%') OR res_type LIKE CONCAT('%',#{keyword},'%')
+						 OR res_os_type LIKE CONCAT('%',#{keyword},'%')
+					)
+				]]>
+			</if>
+			<if test="empId != '' and empId != null">
+				<![CDATA[
+					AND `emp_id` = #{empId}
+				]]>
+			</if>
+			<if test="resId != '' and resId != null">
+				<![CDATA[
+					AND `res_id` = #{resId}
+				]]>
+			</if>
+		</where>
+	</select>
+	
+	<select id="count" parameterType="java.util.HashMap" resultType="int">
+		<![CDATA[
+			SELECT COUNT(`id`) FROM `rule`
+		]]>
+		<where>
+			<if test="keyword != '' and keyword != null">
+				<![CDATA[
+					AND (emp_name LIKE CONCAT('%',#{keyword},'%') OR emp_username LIKE CONCAT('%',#{keyword},'%')
+						 OR emp_group_name LIKE CONCAT('%',#{keyword},'%') OR emp_role_name LIKE CONCAT('%',#{keyword},'%')
+						 OR res_name LIKE CONCAT('%',#{keyword},'%') OR res_ip LIKE CONCAT('%',#{keyword},'%')
+						 OR network_name LIKE CONCAT('%',#{keyword},'%') OR res_type LIKE CONCAT('%',#{keyword},'%')
+						 OR res_os_type LIKE CONCAT('%',#{keyword},'%')
+					)
+				]]>
+			</if>
+			<if test="empId != '' and empId != null">
+				<![CDATA[
+					AND `emp_id` = #{empId}
+				]]>
+			</if>
+			<if test="resId != '' and resId != null">
+				<![CDATA[
+					AND `res_id` = #{resId}
+				]]>
+			</if>
+		</where>
+	</select>
+	
+	<select id="queryById" parameterType="int" resultMap="ruleResult">
+		<![CDATA[
+			SELECT
+			  `id`,
+			  `emp_id`,
+			  `emp_name`,
+			  `emp_username`,
+			  `emp_group_id`,
+			  `emp_group_name`,
+			  `emp_role_id`,
+			  `emp_role_name`,
+			  `res_id`,
+			  `res_name`,
+			  `res_ip`,
+			  `network_id`,
+			  `network_name`,
+			  `res_type`,
+			  `res_os_type`,
+			  `create_time`,
+			  `update_time`
+			FROM `rule` WHERE `id` = #{id}
+		]]>
+	</select>
+	
+	<insert id="insert" parameterType="rule">
+		<![CDATA[
+			INSERT INTO `rule`
+            (
+             `emp_id`,
+             `emp_name`,
+             `emp_username`,
+             `emp_group_id`,
+             `emp_group_name`,
+             `emp_role_id`,
+             `emp_role_name`,
+             `res_id`,
+             `res_name`,
+             `res_ip`,
+             `network_id`,
+             `network_name`,
+             `res_type`,
+             `res_os_type`,
+             `create_time`)
+		VALUES (
+		        #{empId},
+		        #{empName},
+		        #{empUserName},
+		        #{empGroupId},
+		        #{empGroupName},
+		        #{empRoleId},
+		        #{empRoleName},
+		        #{resId},
+		        #{resName},
+		        #{resIp},
+		        #{networkId},
+		        #{networkName},
+		        #{resType},
+		        #{resOsType},
+		        #{createTime})
+		]]>
+		<selectKey keyProperty="id" resultType="java.lang.Integer">
+			<![CDATA[
+				SELECT @@IDENTITY AS id
+			]]>
+		</selectKey>
+	</insert>
+	<update id="update" parameterType="rule">
+		<![CDATA[
+			UPDATE `rule`
+			SET
+			  `emp_id` = #{empId},
+			  `emp_name` = #{empName},
+			  `emp_username` = #{empUserName},
+			  `emp_group_id` = #{empGroupId},
+			  `emp_group_name` = #{empGroupName},
+			  `emp_role_id` = #{empRoleId},
+			  `emp_role_name` = #{empRoleName},
+			  `res_id` = #{resId},
+			  `res_name` = #{resName},
+			  `res_ip` = #{resIp},
+			  `network_id` = #{networkId},
+			  `network_name` = #{networkName},
+			  `res_type` = #{resType},
+			  `res_os_type` = #{resOsType},
+			  `update_time` = #{updateTime}
+			WHERE `id` = #{id}
+		]]>
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		<![CDATA[
+			DELETE FROM `rule` WHERE `id` = #{id}
+		]]>
+	</delete>
+</mapper>

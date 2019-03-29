@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="account">
+	<resultMap type="account" id="accountResult">
+		<result property="id" 			column="id"/>
+		<result property="account" 		column="account"/>
+		<result property="ruleId" 		column="rule_id"/>
+	</resultMap>
+	
+	<select id="queryByRuleId" parameterType="int" resultMap="accountResult">
+		<![CDATA[
+			SELECT
+			  `id`,
+			  `account`,
+			  `rule_id`
+			FROM `rule_account` WHERE `rule_id` = #{ruleId}
+		]]>
+	</select>
+	
+	<select id="queryByAccount" parameterType="java.util.HashMap" resultMap="accountResult">
+		<![CDATA[
+			SELECT
+			  `id`,
+			  `account`,
+			  `rule_id`
+			FROM `rule_account` WHERE `account` = #{account} AND `rule_id` = #{ruleId} LIMIT 1
+		]]>
+	</select>
+	
+	<insert id="insert" parameterType="account">
+		<![CDATA[
+			INSERT INTO `rule_account`(`account`, `rule_id`) VALUES (#{account},#{ruleId})
+		]]>
+		<selectKey keyProperty="id" resultType="java.lang.Integer">
+			<![CDATA[
+				SELECT @@IDENTITY AS id
+			]]>
+		</selectKey>
+	</insert>
+	
+	<delete id="delete" parameterType="java.util.HashMap">
+		<![CDATA[
+			DELETE FROM `rule_account` WHERE `account` = #{account} AND `rule_id` = #{ruleId}
+		]]>
+	</delete>
+</mapper>
