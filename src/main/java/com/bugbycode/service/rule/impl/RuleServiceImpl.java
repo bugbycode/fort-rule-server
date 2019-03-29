@@ -1,6 +1,7 @@
 package com.bugbycode.service.rule.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -48,6 +49,7 @@ public class RuleServiceImpl implements RuleService {
 
 	@Override
 	public int insert(Rule r) {
+		r.setCreateTime(new Date());
 		int row = ruleDao.insert(r);
 		if(row > 0) {
 			return r.getId();
@@ -57,6 +59,7 @@ public class RuleServiceImpl implements RuleService {
 
 	@Override
 	public int update(Rule r) {
+		r.setUpdateTime(new Date());
 		return ruleDao.update(r);
 	}
 
